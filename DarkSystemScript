@@ -1,88 +1,237 @@
--- DarkSystemScript UI Loading Screen 🔥 by DarkSystem
+-- DarkSystemScript GAG Ultra Loading Screen
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local RunService = game:GetService("RunService")
 
-local player = game.Players.LocalPlayer
-local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
-gui.Name = "DarkSystemScript"
-gui.IgnoreGuiInset = true
-gui.ResetOnSpawn = false
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
 
--- Background
-local bg = Instance.new("Frame", gui)
-bg.Size = UDim2.new(1, 0, 1, 0)
-bg.Position = UDim2.new(0, 0, 0, 0)
-bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+-- Cleanup old GUI
+if playerGui:FindFirstChild("DarkSystemV2") then
+    playerGui.DarkSystemV2:Destroy()
+end
 
--- Top Name Text
-local title = Instance.new("TextLabel", bg)
-title.Size = UDim2.new(1, 0, 0, 60)
-title.Position = UDim2.new(0, 0, 0.05, 0)
+-- Create main GUI
+local screenGui = Instance.new("ScreenGui")
+screenGui.Name = "DarkSystemV2"
+screenGui.ResetOnSpawn = false
+screenGui.IgnoreGuiInset = true
+screenGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+screenGui.Parent = playerGui
+
+-- Main frame
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(1, 0, 1, 0)
+mainFrame.BackgroundColor3 = Color3.new(0, 0, 0)
+mainFrame.BackgroundTransparency = 1
+mainFrame.Parent = screenGui
+
+-- Fade in animation
+TweenService:Create(mainFrame, TweenInfo.new(1), {BackgroundTransparency = 0}):Play()
+
+------------------------
+-- DARK SYSTEM SCRIPT TITLE
+------------------------
+local title = Instance.new("TextLabel")
+title.AnchorPoint = Vector2.new(0.5, 0)
+title.Size = UDim2.new(0.8, 0, 0.1, 0)
+title.Position = UDim2.new(0.5, 0, 0.05, 0)
 title.BackgroundTransparency = 1
 title.Text = "DarkSystemScript"
 title.TextColor3 = Color3.fromRGB(0, 255, 255)
-title.Font = Enum.Font.GothamBold
+title.Font = Enum.Font.Arcade
 title.TextScaled = true
+title.TextStrokeTransparency = 0.5
+title.TextStrokeColor3 = Color3.fromRGB(0, 255, 255)
+title.ZIndex = 5
+title.Parent = mainFrame
 
--- Logo (You can change this image ID)
-local logo = Instance.new("ImageLabel", bg)
-logo.Size = UDim2.new(0, 100, 0, 100)
-logo.Position = UDim2.new(0.5, -50, 0.2, 0)
+-- Title glow effect
+coroutine.wrap(function()
+    while true do
+        TweenService:Create(title, TweenInfo.new(1.5), {TextColor3 = Color3.fromRGB(100, 255, 255)}):Play()
+        task.wait(1.5)
+        TweenService:Create(title, TweenInfo.new(1.5), {TextColor3 = Color3.fromRGB(0, 255, 255)}):Play()
+        task.wait(1.5)
+    end
+end)()
+
+------------------------
+-- GROW A GARDEN LOGO
+------------------------
+local logo = Instance.new("ImageLabel")
+logo.AnchorPoint = Vector2.new(0.5, 0.5)
+logo.Size = UDim2.new(0, 350, 0, 150)
+logo.Position = UDim2.new(0.5, 0, 0.4, 0)
 logo.BackgroundTransparency = 1
-logo.Image = "rbxassetid://16882769136" -- 💀 Replace with better logo if needed
+logo.Image = "rbxassetid://15186226342"
+logo.ImageTransparency = 1
+logo.ZIndex = 4
+logo.Parent = mainFrame
 
--- Loading Bar Background
-local barBG = Instance.new("Frame", bg)
-barBG.Size = UDim2.new(0.6, 0, 0.04, 0)
-barBG.Position = UDim2.new(0.2, 0, 0.5, 0)
-barBG.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
-barBG.BorderSizePixel = 2
-barBG.BorderColor3 = Color3.fromRGB(255, 255, 255)
-barBG.ClipsDescendants = true
+-- Logo glow
+local logoGlow = Instance.new("ImageLabel")
+logoGlow.AnchorPoint = Vector2.new(0.5, 0.5)
+logoGlow.Size = UDim2.new(1.2, 0, 1.2, 0)
+logoGlow.Position = UDim2.new(0.5, 0, 0.5, 0)
+logoGlow.BackgroundTransparency = 1
+logoGlow.Image = "rbxassetid://6161183417"
+logoGlow.ImageTransparency = 1
+logoGlow.ZIndex = 3
+logoGlow.Parent = logo
 
--- Bar Fill
-local fill = Instance.new("Frame", barBG)
-fill.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
-fill.Size = UDim2.new(0, 0, 1, 0)
-fill.BorderSizePixel = 0
+-- Logo appear animation
+TweenService:Create(logo, TweenInfo.new(1.5), {ImageTransparency = 0}):Play()
+TweenService:Create(logoGlow, TweenInfo.new(1.5), {ImageTransparency = 0.7}):Play()
 
--- Percent Text
-local percentText = Instance.new("TextLabel", bg)
-percentText.Size = UDim2.new(0, 200, 0, 50)
-percentText.Position = UDim2.new(0.5, -100, 0.57, 0)
-percentText.BackgroundTransparency = 1
-percentText.TextColor3 = Color3.fromRGB(255, 255, 255)
-percentText.Font = Enum.Font.GothamBold
-percentText.TextScaled = true
-percentText.Text = "Loading... 0%"
+-- Logo pulse effect
+coroutine.wrap(function()
+    while true do
+        TweenService:Create(logoGlow, TweenInfo.new(1.5), {Size = UDim2.new(1.4, 0, 1.4, 0), ImageTransparency = 0.9}):Play()
+        task.wait(1.5)
+        TweenService:Create(logoGlow, TweenInfo.new(1.5), {Size = UDim2.new(1.2, 0, 1.2, 0), ImageTransparency = 0.7}):Play()
+        task.wait(1.5)
+    end
+end)()
 
--- Bacon Face
-local bacon = Instance.new("ImageLabel", barBG)
-bacon.Size = UDim2.new(0, 50, 0, 50)
-bacon.Position = UDim2.new(-0.1, 0, -0.5, 0)
-bacon.BackgroundTransparency = 1
-bacon.Image = "rbxassetid://7072718362"
+------------------------
+-- RAIN EFFECT
+------------------------
+local rainContainer = Instance.new("Frame")
+rainContainer.Size = UDim2.new(1, 0, 1, 0)
+rainContainer.BackgroundTransparency = 1
+rainContainer.ZIndex = 2
+rainContainer.Parent = mainFrame
 
--- Bouncing Bacon Animation
-task.spawn(function()
-	while true do
-		bacon:TweenPosition(UDim2.new(-0.1, 0, -0.5, -3), "Out", "Sine", 0.5, true)
-		wait(0.5)
-		bacon:TweenPosition(UDim2.new(-0.1, 0, -0.5, 3), "Out", "Sine", 0.5, true)
-		wait(0.5)
-	end
-end)
+local function createRaindrop()
+    local raindrop = Instance.new("Frame")
+    raindrop.Size = UDim2.new(0, 1.5, 0, math.random(15, 25))
+    raindrop.Position = UDim2.new(math.random(), math.random(-20, 20), 0, math.random(-50, 50))
+    raindrop.BackgroundColor3 = Color3.fromRGB(100, 180, 255)
+    raindrop.BackgroundTransparency = math.random(5, 9)/10
+    raindrop.ZIndex = 2
+    raindrop.Parent = rainContainer
+    
+    local speed = math.random(50, 100)
+    local lifetime = math.random(15, 25)/10
+    
+    coroutine.wrap(function()
+        local startTime = tick()
+        while tick() - startTime < lifetime and raindrop.Parent do
+            raindrop.Position = UDim2.new(
+                raindrop.Position.X.Scale + 0.005 * math.sin(tick()*3),
+                0,
+                raindrop.Position.Y.Scale + 0.02 + (speed/2000),
+                0
+            )
+            if raindrop.Position.Y.Scale > 1.2 then
+                raindrop:Destroy()
+                break
+            end
+            task.wait()
+        end
+        if raindrop.Parent then
+            raindrop:Destroy()
+        end
+    end)()
+end
 
--- Smart Loading (Fast at start, slow at 25%+)
-task.spawn(function()
-	for i = 1, 100 do
-		local speed = 0.03
-		if i > 25 then
-			speed = 0.15
-		end
-		fill:TweenSize(UDim2.new(i/100, 0, 1, 0), "Linear", "Out", speed, true)
-		percentText.Text = "Loading... " .. i .. "%"
-		wait(speed)
-	end
+-- Rain generator
+coroutine.wrap(function()
+    while true do
+        createRaindrop()
+        task.wait(0.05)
+    end
+end)()
 
-	-- Stay after loading (UI will remain)
-	-- You can manually destroy later if needed
-end)
+------------------------
+-- LOADING BAR
+------------------------
+local loadingContainer = Instance.new("Frame")
+loadingContainer.AnchorPoint = Vector2.new(0.5, 0.5)
+loadingContainer.Size = UDim2.new(0.7, 0, 0, 80)
+loadingContainer.Position = UDim2.new(0.5, 0, 0.75, 0)
+loadingContainer.BackgroundTransparency = 1
+loadingContainer.ZIndex = 5
+loadingContainer.Parent = mainFrame
+
+-- Loading text
+local loadingText = Instance.new("TextLabel")
+loadingText.Size = UDim2.new(1, 0, 0, 30)
+loadingText.Position = UDim2.new(0, 0, 0, 0)
+loadingText.BackgroundTransparency = 1
+loadingText.Text = "Initializing DarkSystemScript..."
+loadingText.TextColor3 = Color3.fromRGB(200, 200, 255)
+loadingText.Font = Enum.Font.GothamBold
+loadingText.TextSize = 18
+loadingText.TextXAlignment = Enum.TextXAlignment.Left
+loadingText.Parent = loadingContainer
+
+-- Loading bar background
+local loadingBarBG = Instance.new("Frame")
+loadingBarBG.Size = UDim2.new(1, 0, 0, 20)
+loadingBarBG.Position = UDim2.new(0, 0, 0, 40)
+loadingBarBG.BackgroundColor3 = Color3.fromRGB(30, 30, 40)
+loadingBarBG.BorderColor3 = Color3.fromRGB(50, 50, 60)
+loadingBarBG.BorderSizePixel = 1
+loadingBarBG.ZIndex = 5
+loadingBarBG.Parent = loadingContainer
+
+-- Loading bar fill
+local loadingBarFill = Instance.new("Frame")
+loadingBarFill.Size = UDim2.new(0, 0, 1, 0)
+loadingBarFill.BackgroundColor3 = Color3.fromRGB(0, 180, 255)
+loadingBarFill.BorderSizePixel = 0
+loadingBarFill.ZIndex = 6
+loadingBarFill.Parent = loadingBarBG
+
+-- Loading bar glow effect
+coroutine.wrap(function()
+    while true do
+        TweenService:Create(loadingBarFill, TweenInfo.new(1), {BackgroundColor3 = Color3.fromRGB(20, 220, 255)}):Play()
+        task.wait(1)
+        TweenService:Create(loadingBarFill, TweenInfo.new(1), {BackgroundColor3 = Color3.fromRGB(0, 180, 255)}):Play()
+        task.wait(1)
+    end
+end)()
+
+------------------------
+-- LOADING SEQUENCE
+------------------------
+local function updateProgress(percent, message)
+    loadingBarFill.Size = UDim2.new(percent/100, 0, 1, 0)
+    loadingText.Text = message .. " " .. math.floor(percent) .. "%"
+end
+
+local function loadStep(start, target, duration, message)
+    local steps = target - start
+    local delay = duration / steps
+    
+    for i = start, target do
+        updateProgress(i, message)
+        task.wait(delay)
+    end
+end
+
+-- Main loading sequence
+coroutine.wrap(function()
+    task.wait(1) -- Initial delay
+    
+    -- Fast loading (0-85%)
+    loadStep(0, 85, 2.5, "Loading DarkSystemScript:")
+    
+    -- Slower loading (85-90%)
+    loadStep(85, 90, 1.5, "Finalizing:")
+    
+    -- Get stuck at 97%
+    for i = 90, 97 do
+        updateProgress(i, "Please Wait:")
+        task.wait(0.2)
+    end
+    
+    -- Stay at 97%
+    while true do
+        loadingText.Text = "Please Wait: 97%"
+        task.wait(1)
+    end
+end)()
