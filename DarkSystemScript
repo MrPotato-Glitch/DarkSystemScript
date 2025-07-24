@@ -1,0 +1,88 @@
+-- DarkSystemScript UI Loading Screen 🔥 by DarkSystem
+
+local player = game.Players.LocalPlayer
+local gui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+gui.Name = "DarkSystemScript"
+gui.IgnoreGuiInset = true
+gui.ResetOnSpawn = false
+
+-- Background
+local bg = Instance.new("Frame", gui)
+bg.Size = UDim2.new(1, 0, 1, 0)
+bg.Position = UDim2.new(0, 0, 0, 0)
+bg.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+
+-- Top Name Text
+local title = Instance.new("TextLabel", bg)
+title.Size = UDim2.new(1, 0, 0, 60)
+title.Position = UDim2.new(0, 0, 0.05, 0)
+title.BackgroundTransparency = 1
+title.Text = "DarkSystemScript"
+title.TextColor3 = Color3.fromRGB(0, 255, 255)
+title.Font = Enum.Font.GothamBold
+title.TextScaled = true
+
+-- Logo (You can change this image ID)
+local logo = Instance.new("ImageLabel", bg)
+logo.Size = UDim2.new(0, 100, 0, 100)
+logo.Position = UDim2.new(0.5, -50, 0.2, 0)
+logo.BackgroundTransparency = 1
+logo.Image = "rbxassetid://16882769136" -- 💀 Replace with better logo if needed
+
+-- Loading Bar Background
+local barBG = Instance.new("Frame", bg)
+barBG.Size = UDim2.new(0.6, 0, 0.04, 0)
+barBG.Position = UDim2.new(0.2, 0, 0.5, 0)
+barBG.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+barBG.BorderSizePixel = 2
+barBG.BorderColor3 = Color3.fromRGB(255, 255, 255)
+barBG.ClipsDescendants = true
+
+-- Bar Fill
+local fill = Instance.new("Frame", barBG)
+fill.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+fill.Size = UDim2.new(0, 0, 1, 0)
+fill.BorderSizePixel = 0
+
+-- Percent Text
+local percentText = Instance.new("TextLabel", bg)
+percentText.Size = UDim2.new(0, 200, 0, 50)
+percentText.Position = UDim2.new(0.5, -100, 0.57, 0)
+percentText.BackgroundTransparency = 1
+percentText.TextColor3 = Color3.fromRGB(255, 255, 255)
+percentText.Font = Enum.Font.GothamBold
+percentText.TextScaled = true
+percentText.Text = "Loading... 0%"
+
+-- Bacon Face
+local bacon = Instance.new("ImageLabel", barBG)
+bacon.Size = UDim2.new(0, 50, 0, 50)
+bacon.Position = UDim2.new(-0.1, 0, -0.5, 0)
+bacon.BackgroundTransparency = 1
+bacon.Image = "rbxassetid://7072718362"
+
+-- Bouncing Bacon Animation
+task.spawn(function()
+	while true do
+		bacon:TweenPosition(UDim2.new(-0.1, 0, -0.5, -3), "Out", "Sine", 0.5, true)
+		wait(0.5)
+		bacon:TweenPosition(UDim2.new(-0.1, 0, -0.5, 3), "Out", "Sine", 0.5, true)
+		wait(0.5)
+	end
+end)
+
+-- Smart Loading (Fast at start, slow at 25%+)
+task.spawn(function()
+	for i = 1, 100 do
+		local speed = 0.03
+		if i > 25 then
+			speed = 0.15
+		end
+		fill:TweenSize(UDim2.new(i/100, 0, 1, 0), "Linear", "Out", speed, true)
+		percentText.Text = "Loading... " .. i .. "%"
+		wait(speed)
+	end
+
+	-- Stay after loading (UI will remain)
+	-- You can manually destroy later if needed
+end)
